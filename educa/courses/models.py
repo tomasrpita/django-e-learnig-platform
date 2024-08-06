@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from .fields import OrderField
 
 
 class Subject(models.Model):
@@ -38,9 +39,10 @@ class Module(models.Model):
     course = models.ForeignKey(Course, related_name="modules", on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
+    order = OrderField(blank=True, for_fields=["course"])
 
     def __str__(self):
-        return self.title
+        return f"{self.order}. {self.title}"
 
 
 class Content(models.Model):
@@ -54,6 +56,7 @@ class Content(models.Model):
     )
     object_id = models.PositiveIntegerField()
     item = GenericForeignKey("content_type", "object_id")
+    order = OrderField(blank=True, for_fields=["module"])
 
 
 class ItemBase(models.Model):
