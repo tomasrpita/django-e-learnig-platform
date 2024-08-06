@@ -21,3 +21,51 @@ Explica cómo usar Django Channels para crear un servidor de chat en tiempo real
 
 ### Capítulo 17: Poniéndolo en Producción
 Te mostrará cómo crear configuraciones para múltiples entornos y cómo configurar un entorno de producción utilizando PostgreSQL, Redis, uWSGI, NGINX y Daphne con Docker Compose. Aprenderás a servir tu proyecto de forma segura a través de HTTPS y utilizar el framework de verificación del sistema de Django. El capítulo también te enseñará a construir un middleware personalizado y crear comandos de gestión personalizados.
+
+## Puesta en Marcha
+
+### Prerrequisitos
+
+### Instalación de Dependencias
+
+1. **Clonar el repositorio:**
+
+    ```sh
+    git clone https://github.com/tomasrpita/dejango-e-learnig-platform.git
+    
+    ```
+
+2. **Crear un entorno virtual e instalar las dependencias de Python:**
+
+    ```sh
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install -r requirements.txt
+    ```
+
+### Configuración de la Aplicación Django
+
+1. **Ejecutar las migraciones de la base de datos:**
+
+    ```sh
+    python ./educa/manage.py migrate
+    ```
+
+2. **Crear un superusuario:**
+
+    ```sh
+    python ./educa/manage.py createsuperuser
+    ```
+
+### Iniciar el Servidor de Desarrollo
+
+1. **Iniciar el servidor de desarrollo de Django:**
+
+    ```sh
+    python ./educa/manage.py runserver 0.0.0.0:8000
+    ```
+
+### Acceso a la Aplicación
+
+- La aplicación estará disponible en `http://localhost:8000`.
+- La interfaz de administración de Django estará en `http://localhost:8000/admin`.
