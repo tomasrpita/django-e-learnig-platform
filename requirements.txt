@@ -6,3 +6,4 @@ django-embed-video==1.4.9
 pymemcache==4.0.0
 django-debug-toolbar==4.3.0
 redis==5.0.4
+django-redisboard==8.4.0
