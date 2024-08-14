@@ -31,7 +31,7 @@ Te mostrará cómo crear configuraciones para múltiples entornos y cómo config
 1. **Clonar el repositorio:**
 
     ```sh
-    git clone https://github.com/tomasrpita/dejango-e-learnig-platform.git
+    git clone https://github.com/tomasrpita/django-e-learnig-platform.git
     
     ```
 
@@ -41,6 +41,14 @@ Te mostrará cómo crear configuraciones para múltiples entornos y cómo config
     python3 -m venv .venv
     source .venv/bin/activate
     pip install -r requirements.txt
+    ```
+
+### Configuración de Docker
+
+1. **Iniciar los servicios con Docker Compose:**
+
+    ```sh
+    docker-compose up -d
     ```
 
 ### Configuración de la Aplicación Django
@@ -55,6 +63,12 @@ Te mostrará cómo crear configuraciones para múltiples entornos y cómo config
 
     ```sh
     python ./educa/manage.py createsuperuser
+    ```
+
+3. **Cargar datos iniciales (si aplica):**
+
+    ```sh
+    python ./mysite/manage.py loaddata initial_data.json
     ```
 
 ### Iniciar el Servidor de Desarrollo
