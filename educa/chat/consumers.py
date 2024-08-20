@@ -4,6 +4,7 @@ import json
 # from channels.generic.websocket import WebsocketConsumer
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.utils import timezone
+from .models import Message
 
 # Implementación Síncrona
 # class ChatConsumer(WebsocketConsumer):
@@ -64,6 +65,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # leave room group
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
+    async def persist_message(self, message):
+        # save message to database
+        # using acreate() instead of create() to avoid
+        # IntegrityError when multiple messages are sent
+        await Message.objects.acreate(
+            user=self.user, course_id=self.id, content=message
+        )
+
     # receive message from WebSocket
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
@@ -78,6 +87,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "datetime": timezone.now().isoformat(),
             },
         )
+        await self.persist_message(message)
         # send message to WebSocket
         # self.send(text_data=json.dumps({"message": message}))
 
