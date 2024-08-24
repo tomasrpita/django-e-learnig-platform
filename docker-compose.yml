@@ -1,17 +1,11 @@
-version: '3.9'
-
 services:
-  # memcached:
-  #   image: memcached:1.6.26
-  #   container_name: memcached
-  #   ports:
-  #     - "11211:11211"
-  #   command: memcached -m 64
-  #   restart: unless-stopped
-
-  redis:
-    image: redis:7.2.4
-    container_name: redis
+  web:
+    build: .
+    command: python /code/educa/manage.py runserver 0.0.0.0:8000
+    restart: always
+    volumes:
+      - .:/code
     ports:
-      - "6379:6379"
-    restart: unless-stopped
+      - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=educa.settings.prod
