@@ -1,7 +1,18 @@
 services:
+  db:
+    image: postgres:16.2
+    restart: always
+    volumes:
+      - ./.data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
   web:
     build: .
-    command: python /code/educa/manage.py runserver 0.0.0.0:8000
+    command: ["./wait-for-it.sh", "db:5432", "--",
+            "python", "/code/educa/manage.py", "runserver",
+            "0.0.0.0:8000"]
     restart: always
     volumes:
       - .:/code
@@ -9,3 +20,8 @@ services:
       - "8000:8000"
     environment:
       - DJANGO_SETTINGS_MODULE=educa.settings.prod
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    depends_on:
+      - db
