@@ -17,6 +17,9 @@ DATABASES = {
     }
 }
 
+
 REDIS_URL = "redis://cache:6379"
 CACHES["default"]["LOCATION"] = REDIS_URL
 CHANNEL_LAYERS["default"]["CONFIG"]["hosts"] = [REDIS_URL]
+
+ALLOWED_HOSTS = ["educaproject.com", "www.educaproject.com"]
