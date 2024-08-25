@@ -148,5 +148,8 @@ Temporary Items
 # SSL certificates generated for development
 cert.crt
 cert.key
+educa.key
+educa.crt
+
 
 .data/
