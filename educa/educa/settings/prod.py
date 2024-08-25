@@ -23,3 +23,5 @@ CACHES["default"]["LOCATION"] = REDIS_URL
 CHANNEL_LAYERS["default"]["CONFIG"]["hosts"] = [REDIS_URL]
 
 ALLOWED_HOSTS = ["educaproject.com", "www.educaproject.com"]
+
+SECRET_KEY = config("SECRET_KEY")
