@@ -153,3 +153,6 @@ educa.crt
 
 
 .data/
+
+# uWSGI
+*.sock
