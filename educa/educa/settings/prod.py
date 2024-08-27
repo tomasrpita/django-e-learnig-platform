@@ -5,7 +5,9 @@ DEBUG = False
 ADMINS = [
     ("Tomás R. Pita", "tomasrpita@gmail.com"),
 ]
-ALLOWED_HOSTS = ["*"]
+
+ALLOWED_HOSTS = [".educaproject.com"]
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
