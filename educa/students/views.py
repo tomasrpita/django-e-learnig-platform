@@ -1,4 +1,7 @@
-from courses.models import Course
+from django.shortcuts import get_object_or_404
+import redis
+from django.conf import settings
+from courses.models import Course, Module
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,6 +11,13 @@ from django.views.generic.edit import CreateView, FormView
 from django.views.generic.list import ListView
 
 from .forms import CourseEnrollForm
+
+# Setting up the Redis connection
+r = redis.Redis(
+    host=settings.REDIS_HOST,
+    port=settings.REDIS_PORT,
+    db=settings.REDIS_DB,
+)
 
 
 class StudentRegistrationView(CreateView):
@@ -57,10 +67,27 @@ class StudentCourseDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         # get course object
         course = self.get_object()
+
+        # Construct Redis key
+        redis_key = f"student:{self.request.user.id}:course:{course.id}:last_module"
+
         if "module_id" in self.kwargs:
             # get current module
-            context["module"] = course.modules.get(id=self.kwargs["module_id"])
+            module = course.modules.get(id=self.kwargs["module_id"])
+
+            # Store the last accessed module ID in Redis
+            r.set(redis_key, module.id)
+
         else:
-            # get first module
-            context["module"] = course.modules.all()[0]
+            # Try to get the last accessed module ID from Redis
+            last_module_id = r.get(redis_key)
+
+            if last_module_id:
+                # Fetch the module from the DB using the ID from Redis
+                module = get_object_or_404(Module, id=last_module_id, course=course)
+            else:
+                # Default to the first module if there's no record in Redis
+                module = course.modules.first()
+
+        context["module"] = module
         return context
